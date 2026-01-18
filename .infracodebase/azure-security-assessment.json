@@ -1,0 +1,205 @@
+{
+  "nodes": [
+    {
+      "id": "rg-shared",
+      "label": "Resource Group",
+      "subtitle": "rg-use-shared-dev",
+      "icon": "/icons/azure/management/resource-group.png",
+      "type": "container"
+    },
+    {
+      "id": "rg-icb",
+      "label": "Resource Group",
+      "subtitle": "rg-use2-infracodebase-dev",
+      "icon": "/icons/azure/management/resource-group.png",
+      "type": "container"
+    },
+    {
+      "id": "kv-shared",
+      "label": "Key Vault",
+      "subtitle": "kv-use-shared-dev",
+      "icon": "/icons/azure/security/key-vault.png",
+      "parentNode": "rg-shared",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-secret.png",
+          "position": "bottom-right",
+          "tooltip": "Public Access Enabled ⚠️"
+        }
+      ]
+    },
+    {
+      "id": "storage-shared",
+      "label": "Storage Account",
+      "subtitle": "stouseshareddev",
+      "icon": "/icons/azure/storage/storage-account.png",
+      "parentNode": "rg-shared",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-secret.png",
+          "position": "bottom-right",
+          "tooltip": "Shared Key Access Enabled ⚠️"
+        }
+      ]
+    },
+    {
+      "id": "kv-icb",
+      "label": "Key Vault",
+      "subtitle": "kv-use2-icb-dev",
+      "icon": "/icons/azure/security/key-vault.png",
+      "parentNode": "rg-icb",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-secret.png",
+          "position": "bottom-right",
+          "tooltip": "Public Access + Short Retention ⚠️"
+        }
+      ]
+    },
+    {
+      "id": "storage-icb",
+      "label": "Storage Account",
+      "subtitle": "stouse2icbdev",
+      "icon": "/icons/azure/storage/storage-account.png",
+      "parentNode": "rg-icb",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-secret.png",
+          "position": "bottom-right",
+          "tooltip": "Public Blob Access Enabled ⚠️"
+        }
+      ]
+    },
+    {
+      "id": "webapp",
+      "label": "App Service",
+      "subtitle": "app-infracodebase-use2-dev",
+      "icon": "/icons/azure/application/app-service.png",
+      "parentNode": "rg-icb",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-secret.png",
+          "position": "bottom-right",
+          "tooltip": "Missing Managed Identity ⚠️"
+        }
+      ]
+    },
+    {
+      "id": "postgres",
+      "label": "PostgreSQL Server",
+      "subtitle": "psqlflxsvr-use2-infracodebase-dev",
+      "icon": "/icons/azure/data/azure-database-for-postgresql.png",
+      "parentNode": "rg-icb",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-secret.png",
+          "position": "bottom-right",
+          "tooltip": "Public Access + 37 Firewall Rules ⚠️"
+        }
+      ]
+    },
+    {
+      "id": "log-analytics",
+      "label": "Log Analytics Workspace",
+      "subtitle": "log-use2-infracodebase-dev",
+      "icon": "/icons/azure/management/log-analytics-workspace.png",
+      "parentNode": "rg-icb"
+    },
+    {
+      "id": "app-insights",
+      "label": "Application Insights",
+      "subtitle": "appi-use2-infracodebase-dev",
+      "icon": "/icons/azure/management/application-insights.png",
+      "parentNode": "rg-icb"
+    },
+    {
+      "id": "b2c-dx",
+      "label": "Azure B2C Directory",
+      "subtitle": "onwardplatformsb2c.onmicrosoft.com",
+      "icon": "/icons/azure/identity/entra-id-b2c.png",
+      "position": {
+        "relativeTo": "rg-shared",
+        "side": "above"
+      }
+    },
+    {
+      "id": "b2c-icb",
+      "label": "Azure B2C Directory",
+      "subtitle": "infracodebase.onmicrosoft.com",
+      "icon": "/icons/azure/identity/entra-id-b2c.png",
+      "position": {
+        "relativeTo": "rg-icb",
+        "side": "above"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "webapp-postgres",
+      "source": "webapp",
+      "target": "postgres",
+      "label": "connects to",
+      "color": "red",
+      "style": "dashed"
+    },
+    {
+      "id": "webapp-kv",
+      "source": "webapp",
+      "target": "kv-icb",
+      "label": "retrieves secrets",
+      "color": "red",
+      "style": "dashed"
+    },
+    {
+      "id": "webapp-storage",
+      "source": "webapp",
+      "target": "storage-icb",
+      "label": "stores files",
+      "color": "red",
+      "style": "dashed"
+    },
+    {
+      "id": "webapp-logs",
+      "source": "webapp",
+      "target": "log-analytics",
+      "label": "sends logs"
+    },
+    {
+      "id": "webapp-insights",
+      "source": "webapp",
+      "target": "app-insights",
+      "label": "telemetry"
+    },
+    {
+      "id": "b2c-webapp",
+      "source": "b2c-icb",
+      "target": "webapp",
+      "label": "authenticates users",
+      "color": "blue"
+    }
+  ],
+  "name": "Azure Infrastructure Security Assessment",
+  "legend": {
+    "edges": [
+      {
+        "label": "Secure Connection",
+        "color": "green",
+        "style": "solid"
+      },
+      {
+        "label": "Insecure Connection",
+        "color": "red",
+        "style": "dashed"
+      },
+      {
+        "label": "Authentication Flow",
+        "color": "blue",
+        "style": "solid"
+      },
+      {
+        "label": "Monitoring/Logging",
+        "style": "solid"
+      }
+    ]
+  }
+}

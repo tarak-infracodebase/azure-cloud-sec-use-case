@@ -1,0 +1,307 @@
+{
+  "nodes": [
+    {
+      "id": "vnet",
+      "label": "Virtual Network",
+      "subtitle": "vnet-use2-infracodebase-dev",
+      "icon": "/icons/azure/networking/virtual-network.png",
+      "type": "container",
+      "layout": "column"
+    },
+    {
+      "id": "subnet-private",
+      "label": "Private Subnet",
+      "subtitle": "10.0.1.0/24",
+      "parentNode": "vnet",
+      "order": 1,
+      "type": "container"
+    },
+    {
+      "id": "subnet-endpoints",
+      "label": "Private Endpoints Subnet",
+      "subtitle": "10.0.2.0/24",
+      "parentNode": "vnet",
+      "order": 2,
+      "type": "container"
+    },
+    {
+      "id": "subnet-database",
+      "label": "Database Subnet",
+      "subtitle": "10.0.3.0/24",
+      "parentNode": "vnet",
+      "order": 3,
+      "type": "container"
+    },
+    {
+      "id": "nsg-private",
+      "label": "Network Security Group",
+      "subtitle": "nsg-infracodebase-dev-private",
+      "icon": "/icons/azure/networking/network-security-group.png",
+      "position": {
+        "relativeTo": "subnet-private",
+        "side": "left"
+      }
+    },
+    {
+      "id": "nsg-endpoints",
+      "label": "Network Security Group",
+      "subtitle": "nsg-infracodebase-dev-endpoints",
+      "icon": "/icons/azure/networking/network-security-group.png",
+      "position": {
+        "relativeTo": "subnet-endpoints",
+        "side": "left"
+      }
+    },
+    {
+      "id": "nsg-database",
+      "label": "Network Security Group",
+      "subtitle": "nsg-infracodebase-dev-database",
+      "icon": "/icons/azure/networking/network-security-group.png",
+      "position": {
+        "relativeTo": "subnet-database",
+        "side": "left"
+      }
+    },
+    {
+      "id": "kv-secure",
+      "label": "Key Vault",
+      "subtitle": "kv-use2-icb-dev",
+      "icon": "/icons/azure/security/key-vault.png",
+      "parentNode": "subnet-endpoints",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-hsm.png",
+          "position": "bottom-right",
+          "tooltip": "RBAC + Purge Protection ✅"
+        }
+      ]
+    },
+    {
+      "id": "storage-secure",
+      "label": "Storage Account",
+      "subtitle": "stouse2icbdev",
+      "icon": "/icons/azure/storage/storage-account.png",
+      "parentNode": "subnet-endpoints",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-hsm.png",
+          "position": "bottom-right",
+          "tooltip": "Private + No Shared Keys ✅"
+        }
+      ]
+    },
+    {
+      "id": "postgres-secure",
+      "label": "PostgreSQL Server",
+      "subtitle": "psql-use2-infracodebase-dev",
+      "icon": "/icons/azure/data/azure-database-for-postgresql.png",
+      "parentNode": "subnet-database",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-hsm.png",
+          "position": "bottom-right",
+          "tooltip": "Private + Azure AD Auth ✅"
+        }
+      ]
+    },
+    {
+      "id": "webapp-secure",
+      "label": "App Service",
+      "subtitle": "app-infracodebase-use2-dev",
+      "icon": "/icons/azure/application/app-service.png",
+      "parentNode": "subnet-private",
+      "decorators": [
+        {
+          "icon": "/icons/azure/security/key-vault-hsm.png",
+          "position": "bottom-right",
+          "tooltip": "Managed Identity Enabled ✅"
+        }
+      ]
+    },
+    {
+      "id": "pe-kv",
+      "label": "Private Endpoint",
+      "subtitle": "pe-infracodebase-dev-kv",
+      "icon": "/icons/azure/networking/private-endpoint.png",
+      "position": {
+        "relativeTo": "kv-secure",
+        "side": "right"
+      }
+    },
+    {
+      "id": "pe-storage",
+      "label": "Private Endpoint",
+      "subtitle": "pe-infracodebase-dev-storage",
+      "icon": "/icons/azure/networking/private-endpoint.png",
+      "position": {
+        "relativeTo": "storage-secure",
+        "side": "right"
+      }
+    },
+    {
+      "id": "log-analytics-secure",
+      "label": "Log Analytics Workspace",
+      "subtitle": "log-use2-infracodebase-dev",
+      "icon": "/icons/azure/management/log-analytics-workspace.png",
+      "position": {
+        "relativeTo": "vnet",
+        "side": "below"
+      }
+    },
+    {
+      "id": "app-insights-secure",
+      "label": "Application Insights",
+      "subtitle": "appi-use2-infracodebase-dev",
+      "icon": "/icons/azure/management/application-insights.png",
+      "position": {
+        "relativeTo": "log-analytics-secure",
+        "side": "right"
+      }
+    },
+    {
+      "id": "defender",
+      "label": "Microsoft Defender",
+      "subtitle": "All Services Enabled",
+      "icon": "/icons/azure/security/key-vault.png",
+      "position": {
+        "relativeTo": "vnet",
+        "side": "above"
+      }
+    },
+    {
+      "id": "b2c-secure",
+      "label": "Azure B2C Directory",
+      "subtitle": "infracodebase.onmicrosoft.com",
+      "icon": "/icons/azure/identity/entra-id-b2c.png",
+      "position": {
+        "relativeTo": "webapp-secure",
+        "side": "above"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "nsg-private-subnet",
+      "source": "nsg-private",
+      "target": "subnet-private",
+      "label": "protects",
+      "color": "green"
+    },
+    {
+      "id": "nsg-endpoints-subnet",
+      "source": "nsg-endpoints",
+      "target": "subnet-endpoints",
+      "label": "protects",
+      "color": "green"
+    },
+    {
+      "id": "nsg-database-subnet",
+      "source": "nsg-database",
+      "target": "subnet-database",
+      "label": "protects",
+      "color": "green"
+    },
+    {
+      "id": "webapp-pe-kv",
+      "source": "webapp-secure",
+      "target": "pe-kv",
+      "label": "accesses via",
+      "color": "green"
+    },
+    {
+      "id": "webapp-pe-storage",
+      "source": "webapp-secure",
+      "target": "pe-storage",
+      "label": "accesses via",
+      "color": "green"
+    },
+    {
+      "id": "webapp-postgres",
+      "source": "webapp-secure",
+      "target": "postgres-secure",
+      "label": "connects to",
+      "color": "green"
+    },
+    {
+      "id": "pe-kv-target",
+      "source": "pe-kv",
+      "target": "kv-secure",
+      "label": "connects to",
+      "style": "dashed"
+    },
+    {
+      "id": "pe-storage-target",
+      "source": "pe-storage",
+      "target": "storage-secure",
+      "label": "connects to",
+      "style": "dashed"
+    },
+    {
+      "id": "webapp-logs",
+      "source": "webapp-secure",
+      "target": "log-analytics-secure",
+      "label": "sends logs"
+    },
+    {
+      "id": "webapp-insights",
+      "source": "webapp-secure",
+      "target": "app-insights-secure",
+      "label": "telemetry"
+    },
+    {
+      "id": "postgres-logs",
+      "source": "postgres-secure",
+      "target": "log-analytics-secure",
+      "label": "audit logs"
+    },
+    {
+      "id": "storage-logs",
+      "source": "storage-secure",
+      "target": "log-analytics-secure",
+      "label": "access logs"
+    },
+    {
+      "id": "kv-logs",
+      "source": "kv-secure",
+      "target": "log-analytics-secure",
+      "label": "audit logs"
+    },
+    {
+      "id": "defender-monitoring",
+      "source": "defender",
+      "target": "log-analytics-secure",
+      "label": "security alerts",
+      "color": "blue"
+    },
+    {
+      "id": "b2c-auth",
+      "source": "b2c-secure",
+      "target": "webapp-secure",
+      "label": "authenticates users",
+      "color": "blue"
+    }
+  ],
+  "name": "Azure Infrastructure - Security Remediated",
+  "legend": {
+    "edges": [
+      {
+        "label": "Secure Private Connection",
+        "color": "green",
+        "style": "solid"
+      },
+      {
+        "label": "Private Endpoint Connection",
+        "style": "dashed"
+      },
+      {
+        "label": "Monitoring/Logging",
+        "style": "solid"
+      },
+      {
+        "label": "Authentication/Security",
+        "color": "blue",
+        "style": "solid"
+      }
+    ]
+  }
+}
