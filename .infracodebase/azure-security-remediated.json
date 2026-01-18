@@ -152,7 +152,7 @@
       "id": "app-insights-secure",
       "label": "Application Insights",
       "subtitle": "appi-use2-infracodebase-dev",
-      "icon": "/icons/azure/management/application-insights.png",
+      "icon": "https://az-icons.com/export/icons/b888cbfe0812148dec98d29c2b828988.svg",
       "position": {
         "relativeTo": "log-analytics-secure",
         "side": "right"
